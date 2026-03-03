@@ -1,0 +1,40 @@
+/* أيقونات المفضلة والمقارنة - ألوان موحدة: قلب أحمر فقط، مقارنة أزرق فقط */
+
+/* المفضلة (القلب) - افتراضي: رمادي */
+.product-controls .add-favorites svg path,
+.card-actions .add-favorites svg path {
+    stroke: #363636 !important;
+    fill: none !important;
+    transition: stroke 0.2s, fill 0.2s;
+}
+/* المفضلة - عند الإضافة: أحمر فقط */
+.product-controls button.add-favorites.active svg path,
+.product-controls button.add-favorites.added-favorites svg path,
+.card-actions button.add-favorites.active svg path,
+.card-actions button.add-favorites.added-favorites svg path {
+    stroke: #dc3545 !important;
+    fill: #dc3545 !important;
+}
+
+/* المقارنة (السهم الدائري) - افتراضي: رمادي غامق */
+.product-controls .add-compare svg path,
+.card-actions .add-compare svg path {
+    stroke: #292D32 !important;
+    fill: none !important;
+    transition: stroke 0.2s;
+}
+/* المقارنة - عند الإضافة: أحمر مثل المفضلة */
+.product-controls button.add-compare.active svg path,
+.card-actions button.add-compare.active svg path {
+    stroke: #dc3545 !important;
+    fill: none !important;
+}
+
+/* أزرار للعرض فقط (مثل بطاقة المتجر) */
+.product-controls .add-favorites:disabled,
+.product-controls .add-compare:disabled,
+.card-actions .add-favorites:disabled,
+.card-actions .add-compare:disabled {
+    cursor: default;
+    opacity: 0.8;
+}
