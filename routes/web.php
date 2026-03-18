@@ -181,9 +181,12 @@ Route::middleware('auth')->group(function () {
     });
 });
 
-// Admin Dashboard Routes
+// Admin Dashboard Routes (custom panel)
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
+
+    // Alias route name used by Filament after login to avoid RouteNotFoundException.
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('filament.admin.pages.dashboard');
 
     Route::resource('services', AdminServiceController::class)->names('services');
     Route::resource('users', AdminUserController::class)->only(['index', 'edit', 'update'])->names('users');
