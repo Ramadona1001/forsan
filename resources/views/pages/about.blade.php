@@ -13,12 +13,12 @@
     $goalsContent = $about ? $about->getTranslation('goals_content', $locale) : '';
     $quoteText = $about ? $about->getTranslation('quote_text', $locale) : 'لخيلُ معقودٌ في نواصيها الخيرُ إلى يومِ القيامةِ';
     $aboutImage = $about && $about->about_image ? asset('storage/' . $about->about_image) : asset('images/about-us.webp');
-    $servicesHeading = $about?->services_heading ?? 'خدماتنا';
-    $servicesSubtext = $about?->services_subtext ?? 'هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة.';
-    $partnersHeading = $about?->partners_heading ?? 'الجهات الراعية';
-    $knightsHeading = $about?->knights_heading ?? 'فرساننا';
-    $sportsHeading = $about?->sports_heading ?? 'الرياضات';
-    $sportsSubtext = $about?->sports_subtext ?? 'للرياضات الخيل الموجودة في المملكة العربية السعودية';
+    $servicesHeading = $about?->getTranslation('services_heading', $locale) ?: __('general.our_services');
+    $servicesSubtext = $about?->getTranslation('services_subtext', $locale) ?: __('general.services_subtext_default');
+    $partnersHeading = $about?->getTranslation('partners_heading', $locale) ?: __('general.sponsors');
+    $knightsHeading = $about?->getTranslation('knights_heading', $locale) ?: __('general.our_knights');
+    $sportsHeading = $about?->getTranslation('sports_heading', $locale) ?: __('general.sports');
+    $sportsSubtext = $about?->getTranslation('sports_subtext', $locale) ?: __('general.sports_subtext_default');
 @endphp
 
 <!-- start about-us -->
@@ -180,18 +180,8 @@
 @endif
 <!-- End Our knights -->
 
-<!-- start sports slider -->
-@php
-    $sportsItems = [
-        ['name' => 'القدرة والتحمل', 'img' => 1],
-        ['name' => 'البرساج', 'img' => 2],
-        ['name' => 'الكروس كنتري', 'img' => 3],
-        ['name' => 'قفز الحواجز', 'img' => 4],
-        ['name' => 'السباق', 'img' => 5],
-        ['name' => 'التقاط الأوتاد', 'img' => 6],
-        ['name' => 'الرماية', 'img' => 7],
-    ];
-@endphp
+<!-- start sports slider (من بيانات رياضات الفروسية) -->
+@if(isset($equestrianSports) && $equestrianSports->isNotEmpty())
 <section class="main-section services-slider">
     <div class="container">
         <h2 class="section-head text-center mb-3">{{ $sportsHeading }}</h2>
@@ -199,13 +189,18 @@
         <div class="main-section__wrapper">
             <div class="services-slider__wrapper">
                 <div class="owl-carousel owl-theme sports-slider--carousel">
-                    @foreach($sportsItems as $sport)
+                    @foreach($equestrianSports as $sport)
+                    @php
+                        $sportTitle = $sport->getTranslation('title', $locale) ?: $sport->slug;
+                        $sportImage = $sport->getFirstMediaUrl('image') ?: asset('images/statec.webp');
+                        $sportLink = route('info.sport.show', $sport->slug);
+                    @endphp
                     <div class="item">
-                        <a class="services-slider__item" href="{{ route('home') }}">
+                        <a class="services-slider__item" href="{{ $sportLink }}">
                             <div class="services-slider__item__img">
-                                <img class="img-fluid" src="{{ asset('images/sports/' . $sport['img'] . '.webp') }}" alt="{{ $sport['name'] }}" title="">
+                                <img class="img-fluid" src="{{ $sportImage }}" alt="{{ $sportTitle }}" title="">
                             </div>
-                            <p class="services-slider__item__text">{{ $sport['name'] }}</p>
+                            <p class="services-slider__item__text">{{ $sportTitle }}</p>
                         </a>
                     </div>
                     @endforeach
@@ -218,5 +213,6 @@
         </div>
     </div>
 </section>
+@endif
 <!-- end sports slider -->
 @endsection

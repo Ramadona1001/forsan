@@ -26,6 +26,9 @@ class DatabaseSeeder extends Seeder
             SponsorSeeder::class,
             HorseReviewSeeder::class,
             PhotographySeeder::class,
+            InformationPageSeeder::class,
+            EquestrianSportSeeder::class,
+            CollaborationSeeder::class,
         ]);
 
         Schema::enableForeignKeyConstraints();

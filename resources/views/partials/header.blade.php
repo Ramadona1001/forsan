@@ -507,33 +507,87 @@
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('stores.*') ? 'active' : '' }}"
                                 href="{{ route('stores.index') }}">{{ __('general.stores') }}</a>
-
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('stables.*') ? 'active' : '' }}"
                                 href="{{ route('stables.index') }}">{{ __('general.stables') }}</a>
-
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('horses.*') ? 'active' : '' }}"
-                                href="{{ route('horses.index') }}">{{ __('general.horses_menu') }}</a>
-
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('blogs.*') ? 'active' : '' }}"
-                                href="{{ route('blogs.index') }}">{{ __('general.blog') }}</a>
-
+                            <a class="nav-link custom-toggler {{ request()->routeIs('info.*') || request()->routeIs('knights.*') || request()->routeIs('sponsors.index') ? 'active' : '' }}"
+                                data-target="#dropdown-information-about" href="javascript:void(0)">
+                                {{ __('general.information_about') }} <i class="bi bi-chevron-down"></i>
+                            </a>
+                            {{-- Information About Dropdown --}}
+                            <div class="custom-dropdown has-children" id="dropdown-information-about">
+                                <div class="dropdown-scroll-wrapper">
+                                    <ul>
+                                        <li>
+                                            <a class="products-item {{ request()->routeIs('info.show') && request()->route('slug') === 'our-horses-our-responsibility' ? 'active' : '' }}"
+                                                href="{{ route('info.show', 'our-horses-our-responsibility') }}">
+                                                <p class="products-item__title"><span>{{ __('general.our_horses_our_responsibility') }}</span></p>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="products-item {{ request()->routeIs('knights.index') ? 'active' : '' }}"
+                                                href="{{ route('knights.index') }}">
+                                                <p class="products-item__title"><span>{{ __('general.our_knights') }}</span></p>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="products-item {{ request()->routeIs('sponsors.index') ? 'active' : '' }}"
+                                                href="{{ route('sponsors.index') }}">
+                                                <p class="products-item__title"><span>{{ __('general.sponsors') }}</span></p>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="products-item {{ request()->routeIs('info.show') && request()->route('slug') === 'people-with-special-needs' ? 'active' : '' }}"
+                                                href="{{ route('info.show', 'people-with-special-needs') }}">
+                                                <p class="products-item__title"><span>{{ __('general.people_with_special_needs') }}</span></p>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="products-item {{ request()->routeIs('info.show') && request()->route('slug') === 'digital-services' ? 'active' : '' }}"
+                                                href="{{ route('info.show', 'digital-services') }}">
+                                                <p class="products-item__title"><span>{{ __('general.digital_services') }}</span></p>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="products-item {{ request()->routeIs('info.show') && request()->route('slug') === 'safety' ? 'active' : '' }}"
+                                                href="{{ route('info.show', 'safety') }}">
+                                                <p class="products-item__title"><span>{{ __('general.safety_standards') }}</span></p>
+                                            </a>
+                                        </li>
+                                        <li class="children-parent">
+                                            <a class="products-item custom-toggler" data-target="#dropdown-equestrian-sports" href="javascript:void(0)">
+                                                <p class="products-item__title"><span>{{ __('general.equestrian_sports_overview') }}</span><i class="bi bi-chevron-left"></i></p>
+                                            </a>
+                                            <ul class="custom-dropdown" id="dropdown-equestrian-sports">
+                                                @foreach($equestrianSports ?? [] as $sport)
+                                                    @php $sportTitle = $sport->getTranslation('title', app()->getLocale()) ?: $sport->slug; @endphp
+                                                    <li>
+                                                        <a class="products-item {{ request()->routeIs('info.sport.show') && request()->route('sport_slug') === $sport->slug ? 'active' : '' }}"
+                                                            href="{{ route('info.sport.show', $sport->slug) }}">
+                                                            <p class="products-item__title"><span>{{ $sportTitle }}</span></p>
+                                                        </a>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('about') ? 'active' : '' }}"
                                 href="{{ route('about') }}">{{ __('general.about_us') }}</a>
-
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('collaboration.*') ? 'active' : '' }}"
+                                href="{{ route('collaboration.index') }}">{{ __('general.collaboration_with_establishments') }}</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('contact') ? 'active' : '' }}"
                                 href="{{ route('contact') }}">{{ __('general.contact_us') }}</a>
-
                         </li>
                     </ul>
                     @php

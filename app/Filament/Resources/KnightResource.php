@@ -19,10 +19,22 @@ class KnightResource extends Resource
     protected static ?string $model = Knight::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
-    protected static ?string $navigationLabel = 'فرساننا';
-    protected static ?string $modelLabel = 'فارس';
-    protected static ?string $pluralModelLabel = 'فرساننا';
     protected static ?int $navigationSort = 5;
+
+    public static function getNavigationLabel(): string
+    {
+        return __('filament.resources.knight.navigation_label');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('filament.resources.knight.model_label');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('filament.resources.knight.plural_label');
+    }
 
     public static function getNavigationGroup(): ?string
     {
@@ -36,34 +48,34 @@ class KnightResource extends Resource
                 Forms\Components\Section::make()
                     ->schema([
                         Forms\Components\TextInput::make('name')
-                            ->label('الاسم')
+                            ->label(__('filament.resources.knight.fields.name'))
                             ->required()
                             ->maxLength(255)
                             ->live(onBlur: true)
                             ->afterStateUpdated(fn (Forms\Set $set, ?string $state) => $set('slug', Str::slug($state ?? ''))),
                         Forms\Components\Textarea::make('description')
-                            ->label('الوصف')
+                            ->label(__('filament.resources.knight.fields.description'))
                             ->rows(4)
                             ->columnSpanFull(),
                         Forms\Components\SpatieMediaLibraryFileUpload::make('image')
-                            ->label('الصورة')
+                            ->label(__('filament.resources.knight.fields.image'))
                             ->collection('image')
                             ->image()
                             ->nullable(),
                         Forms\Components\TextInput::make('slug')
-                            ->label('الرابط (slug)')
+                            ->label(__('filament.resources.knight.fields.slug'))
                             ->maxLength(255)
                             ->unique(Knight::class, 'slug', ignoreRecord: true),
                         Forms\Components\TextInput::make('link')
-                            ->label('رابط إقرأ المزيد (اختياري)')
+                            ->label(__('filament.resources.knight.fields.link'))
                             ->url()
                             ->maxLength(500),
                         Forms\Components\TextInput::make('sort_order')
-                            ->label('ترتيب العرض')
+                            ->label(__('filament.resources.knight.fields.sort_order'))
                             ->numeric()
                             ->default(0),
                         Forms\Components\Toggle::make('is_active')
-                            ->label('نشط')
+                            ->label(__('filament.resources.knight.fields.is_active'))
                             ->default(true),
                     ])->columns(2),
             ]);
@@ -74,18 +86,18 @@ class KnightResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\SpatieMediaLibraryImageColumn::make('image')
-                    ->label('الصورة')
+                    ->label(__('filament.resources.knight.fields.image'))
                     ->collection('image')
                     ->circular(),
                 Tables\Columns\TextColumn::make('name')
-                    ->label('الاسم')
+                    ->label(__('filament.resources.knight.fields.name'))
                     ->formatStateUsing(fn (Knight $record) => $record->getTranslation('name', app()->getLocale()) ?: '—')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('sort_order')
-                    ->label('الترتيب')
+                    ->label(__('filament.resources.knight.fields.sort_order'))
                     ->sortable(),
                 Tables\Columns\IconColumn::make('is_active')
-                    ->label('نشط')
+                    ->label(__('filament.resources.knight.fields.is_active'))
                     ->boolean(),
             ])
             ->defaultSort('sort_order')

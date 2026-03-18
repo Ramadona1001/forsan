@@ -49,28 +49,23 @@ class SponsorResource extends Resource
                 Forms\Components\Section::make()
                     ->schema([
                         Forms\Components\TextInput::make('name')
-                            ->label(__('Internal Name'))
-                            ->translateLabel()
+                            ->label(__('filament.resources.sponsor.fields.name'))
                             ->required()
                             ->maxLength(255),
                         Forms\Components\SpatieMediaLibraryFileUpload::make('logo')
-                            ->label(__('Logo'))
+                            ->label(__('filament.resources.sponsor.fields.logo'))
                             ->collection('logo')
-                            ->translateLabel()
                             ->required(),
                         Forms\Components\TextInput::make('website')
-                            ->label(__('Website Link'))
-                            ->translateLabel()
+                            ->label(__('filament.resources.sponsor.fields.website'))
                             ->url()
                             ->maxLength(255),
                         Forms\Components\TextInput::make('order')
-                            ->label(__('Sort Order'))
-                            ->translateLabel()
+                            ->label(__('filament.resources.sponsor.fields.sort_order'))
                             ->numeric()
                             ->default(0),
                         Forms\Components\Toggle::make('is_active')
-                            ->label(__('Active'))
-                            ->translateLabel()
+                            ->label(__('filament.resources.sponsor.fields.is_active'))
                             ->default(true),
                     ]),
             ]);
@@ -81,26 +76,21 @@ class SponsorResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\SpatieMediaLibraryImageColumn::make('logo')
-                    ->label(__('Logo'))
-                    ->collection('logo')
-                    ->translateLabel(),
+                    ->label(__('filament.resources.sponsor.fields.logo'))
+                    ->collection('logo'),
                 Tables\Columns\TextColumn::make('name')
-                    ->label(__('Name'))
-                    ->translateLabel()
+                    ->label(__('filament.resources.sponsor.fields.name'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('website')
-                    ->label(__('Website'))
-                    ->translateLabel()
+                    ->label(__('filament.resources.sponsor.fields.website'))
                     ->url(fn(Sponsor $record) => $record->website)
                     ->openUrlInNewTab()
                     ->limit(30),
                 Tables\Columns\TextColumn::make('order')
-                    ->label(__('Order'))
-                    ->translateLabel()
+                    ->label(__('filament.resources.sponsor.table.order'))
                     ->sortable(),
                 Tables\Columns\IconColumn::make('is_active')
-                    ->label(__('Active'))
-                    ->translateLabel()
+                    ->label(__('filament.resources.sponsor.fields.is_active'))
                     ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

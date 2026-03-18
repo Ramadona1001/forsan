@@ -22,6 +22,11 @@ class AppServiceProvider extends ServiceProvider
     {
         \Illuminate\Support\Facades\View::share('siteSettings', \App\Models\SiteSetting::getSettings());
 
+        \Illuminate\Support\Facades\View::composer('partials.header', function ($view) {
+            $overviewPage = \App\Models\InformationPage::where('slug', 'equestrian-sports-overview')->first();
+            $view->with('equestrianSports', $overviewPage ? $overviewPage->equestrianSports()->active()->ordered()->get() : collect());
+        });
+
         LanguageSwitch::configureUsing(function (LanguageSwitch $switch) {
             $switch
                 ->locales(['ar', 'en'])

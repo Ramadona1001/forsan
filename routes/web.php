@@ -13,6 +13,11 @@ use App\Http\Controllers\StoreController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\CheckoutController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\ServiceController as AdminServiceController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\BookingController as AdminBookingController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +39,10 @@ Route::get('/search', [HomeController::class, 'search'])->name('search');
 Route::get('/about', [HomeController::class, 'about'])->name('about');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 Route::post('/contact', [HomeController::class, 'contactSubmit'])->name('contact.submit');
+
+Route::get('/collaboration', [\App\Http\Controllers\CollaborationController::class, 'index'])->name('collaboration.index');
+Route::get('/collaboration/{slug}', [\App\Http\Controllers\CollaborationController::class, 'showRequest'])->name('collaboration.request');
+Route::post('/collaboration/{slug}', [\App\Http\Controllers\CollaborationController::class, 'submitRequest'])->name('collaboration.submit');
 
 // Horses
 Route::prefix('horses')->name('horses.')->group(function () {
@@ -57,7 +66,15 @@ Route::prefix('services')->name('services.')->group(function () {
 });
 
 // Knights (فرساننا)
+Route::get('/knights', [App\Http\Controllers\KnightController::class, 'index'])->name('knights.index');
 Route::get('/knights/{slug}', [App\Http\Controllers\KnightController::class, 'show'])->name('knights.show');
+
+// Sponsors (الرعاة)
+Route::get('/sponsors', [App\Http\Controllers\SponsorController::class, 'index'])->name('sponsors.index');
+
+// Information About pages (معلومات عن)
+Route::get('/info/equestrian-sports-overview/{sport_slug}', [App\Http\Controllers\InformationPageController::class, 'showSport'])->name('info.sport.show');
+Route::get('/info/{slug}', [App\Http\Controllers\InformationPageController::class, 'show'])->name('info.show');
 
 // Stores
 Route::prefix('stores')->name('stores.')->group(function () {
@@ -162,4 +179,14 @@ Route::middleware('auth')->group(function () {
         Route::get('/conversations/{conversation}/messages', [ProfileController::class, 'getMessages'])->name('conversations.messages');
         Route::post('/conversations/{conversation}/messages', [ProfileController::class, 'sendMessage'])->name('conversations.send');
     });
+});
+
+// Admin Dashboard Routes
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
+
+    Route::resource('services', AdminServiceController::class)->names('services');
+    Route::resource('users', AdminUserController::class)->only(['index', 'edit', 'update'])->names('users');
+    Route::resource('categories', AdminCategoryController::class)->names('categories');
+    Route::resource('bookings', AdminBookingController::class)->only(['index', 'show', 'update'])->names('bookings');
 });

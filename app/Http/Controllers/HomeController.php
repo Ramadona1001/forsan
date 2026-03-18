@@ -111,7 +111,10 @@ class HomeController extends Controller
         $partners = Sponsor::active()->ordered()->get();
         $featuredServices = FeaturedServicesService::getFeatured(12);
         $knights = \App\Models\Knight::active()->ordered()->get();
-        return view('pages.about', compact('about', 'partners', 'featuredServices', 'knights'));
+        $overviewPage = \App\Models\InformationPage::where('slug', 'equestrian-sports-overview')->first();
+        $equestrianSports = $overviewPage ? $overviewPage->equestrianSports()->active()->ordered()->with('media')->get() : collect();
+
+        return view('pages.about', compact('about', 'partners', 'featuredServices', 'knights', 'equestrianSports'));
     }
 
     public function contact()
